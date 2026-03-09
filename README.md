@@ -4,7 +4,7 @@ Lightweight WPF behavior package for **MVVM-oriented input and focus handling**.
 
 This library provides small, practical behaviors that reduce code-behind and keep UI interaction logic connected to `ICommand` and declarative XAML configuration.
 
-[➡️ 한국어 문서 보기](README_ko.md)
+[➡️ 한국어 문서 보기](README_KO.md)
 
 ---
 
