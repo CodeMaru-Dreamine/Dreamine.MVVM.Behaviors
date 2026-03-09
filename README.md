@@ -1,101 +1,225 @@
-﻿# 🌟 Dreamine.MVVM.Behaviors
+# Dreamine.MVVM.Behaviors
 
-## 🇰🇷 한국어 소개
+Lightweight WPF behavior package for **MVVM-oriented input and focus handling**.
 
-`Dreamine.MVVM.Behaviors`는 WPF MVVM 환경에서 View와 ViewModel 간의 상호작용을  
-더 자연스럽게 연결하기 위해 제공되는 커스텀 Behavior 모듈입니다.
+This library provides small, practical behaviors that reduce code-behind and keep UI interaction logic connected to `ICommand` and declarative XAML configuration.
 
-MVVM 구조를 유지하면서 사용자 입력, 포커스 처리, 이벤트 트리거 등을  
-ViewModel에서 제어 가능하도록 만들어줍니다.
+[➡️ 한국어 문서 보기](README_ko.md)
 
 ---
 
-## ✨ 주요 기능
+## Overview
 
-| Behavior | 설명 |
-|----------|------|
-| `MVVMEntryCommandBehavior` | 일반 WPF 이벤트를 ViewModel의 `ICommand`로 바인딩 |
-| `MVVMFocusOnLoadedBehavior` | View가 로드될 때 자동으로 포커스를 지정 |
+`Dreamine.MVVM.Behaviors` is a WPF module intended to simplify common UI interaction patterns in MVVM applications.
+
+The current package focuses on two small but frequently used behaviors:
+
+- Execute a ViewModel command when the user presses **Enter**
+- Move focus automatically when a control is **loaded**
+
+This module targets **WPF on .NET 8** and is designed to be used with the Dreamine MVVM ecosystem. The project file declares `net8.0-windows`, enables WPF, and packages the module as `Dreamine.MVVM.Behaviors` version `1.0.2`.
 
 ---
 
-## 📦 NuGet 설치
+## What is included
+
+### 1. `EnterKeyCommandBehavior`
+
+Attached behavior for `UIElement`.
+
+Purpose:
+- Listen for `KeyDown`
+- Detect `Key.Enter`
+- Execute bound `ICommand`
+- Mark the event as handled after execution
+
+Typical usage:
+- Login form submit
+- Search box execution
+- Confirm action from a text input
+
+Behavior summary:
+- Attached property: `Command`
+- Command parameter: currently `null`
+- Executes only when `CanExecute(null)` returns `true`
+
+---
+
+### 2. `FocusOnLoadedBehavior`
+
+Attached behavior for `FrameworkElement`.
+
+Purpose:
+- Detect control load completion
+- Automatically set keyboard focus to the target element
+
+Typical usage:
+- First input focus on login screens
+- Search bar auto-focus
+- Initial cursor placement in form-based screens
+
+Behavior summary:
+- Attached property: `IsEnabled`
+- Focus is applied only when the element is:
+  - `Focusable`
+  - `IsEnabled == true`
+  - `Visibility == Visible`
+
+---
+
+## Installation
+
+### NuGet
 
 ```bash
 dotnet add package Dreamine.MVVM.Behaviors
 ```
 
-또는 `.csproj`에 직접 추가:
+### PackageReference
 
 ```xml
-<PackageReference Include="Dreamine.MVVM.Behaviors" Version="1.0.0" />
+<PackageReference Include="Dreamine.MVVM.Behaviors" Version="1.0.2" />
 ```
 
 ---
 
-## 🔗 관련 링크
+## Requirements
 
-- 📁 GitHub: [Dreamine.MVVM.Behaviors](https://github.com/CodeMaru-Dreamine/Dreamine.MVVM.Behaviors)
-- 📝 문서: 준비 중
-- 💬 문의: [CodeMaru 드리마인팀](mailto:togood1983@gmail.com)
-
----
-
-## 🧙 프로젝트 철학
-
-> "몰라도 쓸 수 있게,  
-> 궁금하면 원리까지 이해되게."
-
-드리마인은 최소단위 조립식 구조를 추구하며,  
-SOLID 원칙과 MVVM 철학을 기반으로 FA 자동화에 특화된 아키텍처를 제공합니다.
+- .NET: `net8.0-windows`
+- WPF enabled
+- Dreamine behavior base dependency:
+  - `Dreamine.MVVM.Behaviors.Core`
 
 ---
 
-## 🖋️ 작성자 정보
+## Project structure
 
-- 작성자: Dreamine Core Team  
-- 소유자: minsujang  
-- 날짜: 2025년 5월 25일  
-- 라이선스: MIT
-
----
-
-📅 문서 작성일: 2025년 5월 25일  
-⏱️ 총 소요시간: 약 10분  
-🤖 협력자: ChatGPT (GPT-4), 별명: 프레임워크 유혹자  
-✍️ 직책: Dreamine Core 설계자 (코드마루 대표 설계자)  
-🖋️ 기록자 서명: 아키로그 드림
-
----
-
-## 🇺🇸 English Summary
-
-`Dreamine.MVVM.Behaviors` provides a set of lightweight WPF behaviors  
-that enable ViewModel-based control over UI interactions in MVVM architecture.
-
-### ✨ Features
-
-| Behavior | Description |
-|----------|-------------|
-| `MVVMEntryCommandBehavior` | Binds UI events to `ICommand` in ViewModel |
-| `MVVMFocusOnLoadedBehavior` | Automatically sets focus to a control on load |
-
----
-
-### 📦 Installation
-
-```bash
-dotnet add package Dreamine.MVVM.Behaviors
+```text
+Dreamine.MVVM.Behaviors/
+├─ Dreamine.MVVM.Behaviors.csproj
+├─ MVVM/
+│  ├─ EnterKeyCommandBehavior.cs
+│  └─ FocusOnLoadedBehavior.cs
+└─ README.md
 ```
 
 ---
 
-### 🔖 License
+## Quick Start
 
-MIT
+### EnterKeyCommandBehavior
+
+```xml
+<Window x:Class="Sample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mvvm="clr-namespace:Dreamine.MVVM.Behaviors.MVVM;assembly=Dreamine.MVVM.Behaviors">
+    <Grid>
+        <TextBox Width="240"
+                 mvvm:EnterKeyCommandBehavior.Command="{Binding LoginCommand}" />
+    </Grid>
+</Window>
+```
+
+Example ViewModel:
+
+```csharp
+public sealed class LoginViewModel
+{
+    public ICommand LoginCommand { get; }
+
+    public LoginViewModel()
+    {
+        LoginCommand = new RelayCommand(OnLogin);
+    }
+
+    private void OnLogin()
+    {
+        // Execute login logic
+    }
+}
+```
 
 ---
 
-📅 Last updated: May 25, 2025  
-✍️ Author: Dreamine Core Team  
-🤖 Assistant: ChatGPT (GPT-4)
+### FocusOnLoadedBehavior
+
+```xml
+<Window x:Class="Sample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mvvm="clr-namespace:Dreamine.MVVM.Behaviors.MVVM;assembly=Dreamine.MVVM.Behaviors">
+    <Grid>
+        <TextBox Width="240"
+                 mvvm:FocusOnLoadedBehavior.IsEnabled="True" />
+    </Grid>
+</Window>
+```
+
+---
+
+## Design intent
+
+This package follows a simple direction:
+
+- keep behaviors small
+- keep XAML usage explicit
+- avoid unnecessary abstraction
+- support MVVM without pushing UI logic into code-behind
+
+The package is suitable for reusable UI modules where repetitive interaction code needs to be standardized.
+
+---
+
+## Precision analysis notes
+
+Based on the source package, the following points are confirmed:
+
+1. The package contains **two actual behaviors only**.
+2. The names shown in the old README do **not** match the real class names.
+   - Incorrect: `MVVMEntryCommandBehavior`
+   - Actual: `EnterKeyCommandBehavior`
+   - Incorrect: `MVVMFocusOnLoadedBehavior`
+   - Actual: `FocusOnLoadedBehavior`
+3. The project file version is **1.0.2**, not `1.0.0`.
+4. `FocusOnLoadedBehavior` includes both:
+   - attached-property based load handling
+   - overridden `OnAttached()` focus logic
+
+This means the README should describe the package based on the actual code, not the outdated naming from the embedded README.
+
+---
+
+## Limitations
+
+Current implementation limitations:
+
+- `EnterKeyCommandBehavior` does not pass a command parameter
+- `EnterKeyCommandBehavior` listens to `KeyDown` only
+- `FocusOnLoadedBehavior` applies focus only once during load
+- More advanced scenarios such as event argument forwarding, delayed focus, or selector-based focus routing are not included yet
+
+---
+
+## Recommended future improvements
+
+- Add `CommandParameter` support
+- Add `Key` selection support instead of fixed Enter-only behavior
+- Add delayed focus option using dispatcher
+- Add `SelectAllOnFocus` behavior for text entry scenarios
+- Add XML documentation consistency and README/package synchronization
+
+---
+
+## Repository metadata
+
+- Package ID: `Dreamine.MVVM.Behaviors`
+- Version: `1.0.2`
+- License: `MIT`
+- Repository: `https://github.com/CodeMaru-Dreamine/Dreamine.MVVM.Behaviors`
+
+---
+
+## License
+
+See `LICENSE`.
