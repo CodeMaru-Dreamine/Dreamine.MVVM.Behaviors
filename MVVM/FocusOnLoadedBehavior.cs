@@ -73,7 +73,7 @@ namespace Dreamine.MVVM.Behaviors.MVVM
 
 		protected override void OnAttached()
 		{
-			AssociatedObject.Loaded += (s, e) =>
+			AssociatedObject!.Loaded += (s, e) =>
 			{
 				AssociatedObject.Focus();
 			};
