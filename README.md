@@ -182,9 +182,7 @@ Based on the source package, the following points are confirmed:
    - Incorrect: `MVVMFocusOnLoadedBehavior`
    - Actual: `FocusOnLoadedBehavior`
 3. The project file version is **1.0.2**, not `1.0.0`.
-4. `FocusOnLoadedBehavior` includes both:
-   - attached-property based load handling
-   - overridden `OnAttached()` focus logic
+4. `FocusOnLoadedBehavior` uses a single attached-property based load path.
 
 This means the README should describe the package based on the actual code, not the outdated naming from the embedded README.
 
@@ -196,7 +194,7 @@ Current implementation limitations:
 
 - `EnterKeyCommandBehavior` does not pass a command parameter
 - `EnterKeyCommandBehavior` listens to `KeyDown` only
-- `FocusOnLoadedBehavior` applies focus only once during load
+- `FocusOnLoadedBehavior` applies focus only once during load through the attached property path
 - More advanced scenarios such as event argument forwarding, delayed focus, or selector-based focus routing are not included yet
 
 ---

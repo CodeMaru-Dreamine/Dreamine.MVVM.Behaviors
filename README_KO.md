@@ -182,9 +182,7 @@ public sealed class LoginViewModel
    - 잘못된 표기: `MVVMFocusOnLoadedBehavior`
    - 실제 클래스명: `FocusOnLoadedBehavior`
 3. 프로젝트 파일 기준 패키지 버전은 **1.0.2**이다.
-4. `FocusOnLoadedBehavior`는 다음 두 방식이 동시에 들어 있다.
-   - Attached Property 기반 `Loaded` 처리
-   - `OnAttached()` 오버라이드 내부 포커스 처리
+4. `FocusOnLoadedBehavior`는 Attached Property 기반 `Loaded` 처리 경로 하나만 사용한다.
 
 즉, README는 예전 문구가 아니라 **실제 코드 기준으로 다시 작성**하는 것이 맞다.
 
@@ -196,7 +194,7 @@ public sealed class LoginViewModel
 
 - `EnterKeyCommandBehavior`는 CommandParameter를 전달하지 않는다
 - `EnterKeyCommandBehavior`는 `KeyDown`만 처리한다
-- `FocusOnLoadedBehavior`는 로드 시점 1회 포커스만 처리한다
+- `FocusOnLoadedBehavior`는 Attached Property 경로를 통해 로드 시점 1회 포커스만 처리한다
 - 이벤트 인자 전달, 지연 포커스, 선택적 포커스 라우팅 같은 고급 기능은 아직 없다
 
 ---
